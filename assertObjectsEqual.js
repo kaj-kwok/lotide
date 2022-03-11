@@ -32,7 +32,7 @@ const eqArrays = function(arr1, arr2){
 
 const assertObjectsEqual = function(actual, expected) {
   const inspect = require('util').inspect;
-  if(actual === expected){
+  if(eqObjects(actual, expected)){
     console.log(`✔️✔️✔️ Assertion Passed: ${inspect(actual)} matches ${inspect(expected)}`);
   }
   else {
