@@ -10,12 +10,16 @@ const assertEqual = function(actual, expected) {
 const eqObjects = function(object1, object2){
   let keys1 = Object.keys(object1)
   let keys2 = Object.keys(object2)
+  
   if(keys1.length !== keys2.length){
     return false
   }
-  for(key of keys1){
+  for(const key of keys1){
     if(Array.isArray(object1[key]) === true && Array.isArray(object2[key]) === true){
       return eqArrays(object1[key], object2[key])
+    }
+    else if(!(Array.isArray(object1[key])) && !(Array.isArray(object2[key]))){
+      return eqObjects(object1[key], object2[key])
     }
     else if(object1[key] !== object2[key]){
       return false
@@ -39,30 +43,10 @@ const eqArrays = function(arr1, arr2){
   return true;
 }
 
-//test assertions
+console.log(eqObjects({ a: { z: 1 }, b: 2 }, { a: { z: 1 }, b: 2 })) // => true
+console.log(eqObjects({ a: { y: 0, z: 1 }, b: 2 }, { a: { z: 1 }, b: 2 })) // => false
+console.log(eqObjects({ a: { y: 0, z: 1 }, b: 2 }, { a: 1, b: 2 })) // => false
 
-const test1 = {
-  a: "2",
-  e: "5"
-}
-const test2 = {
-  a: "2",
-  e: "5"
-}
-
-assertEqual(eqObjects(test1, test2), true); // true
-
-const test3 = {
-  a: "1",
-  e: "5",
-  b: "2"
-}
-
-assertEqual(eqObjects(test2, test3), false); // false
-
-const cd = { c: "1", d: ["2", 3] };
-const dc = { d: ["2", 3], c: "1" };
-assertEqual(eqObjects(cd, dc), true); // => true
-
-const cd2 = { c: "1", d: ["2", 3, 4] };
-assertEqual(eqObjects(cd, cd2), false); // => false
+assertEqual(eqObjects({ a: { z: 1 }, b: 2 }, { a: { z: 1 }, b: 2 }), true)
+assertEqual(eqObjects({ a: { y: 0, z: 1 }, b: 2 }, { a: { z: 1 }, b: 2 }), false)
+assertEqual(eqObjects({ a: { y: 0, z: 1 }, b: 2 }, { a: 1, b: 2 }), false)
